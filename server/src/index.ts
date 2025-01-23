@@ -54,6 +54,6 @@ export const getUserConnection = (userId: string) => {
 };
 export default {
     fetch: app.fetch,
-    port: 8000,
+    port: process.env.PORT || 8300,
     websocket,
 };

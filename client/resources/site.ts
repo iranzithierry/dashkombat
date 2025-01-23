@@ -8,7 +8,7 @@ export const siteConfig = {
     protocols: {
         websocket: isProd ? "wss" : "ws",
         http: isProd ? "https" : "http",
-        serverHost: isProd ? "localhost.com" : "192.168.1.74:8000",
+        serverHost: isProd ? "click-it.ebuzzie.com" : "192.168.1.74:8000",
     },
     pointsDivider: 7.82
 };
