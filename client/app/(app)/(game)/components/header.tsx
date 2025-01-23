@@ -7,23 +7,24 @@ import AuthTrigger from "@/components/auth-trigger";
 import { memo, useEffect, useRef, useMemo } from "react";
 import { getLevelName, levelNames } from "@/resources/data";
 
-
-const ProfilePicture = memo(({ progressPercentage }: { progressPercentage: number }) => (
-    <div
-        className="relative flex items-center overflow-hidden w-[52px] h-[52px] rounded-full p-[3px]"
-        style={{
-            background: `conic-gradient(from 0deg, red ${progressPercentage}%, white ${progressPercentage}%)`,
-        }}
-    >
-        <div className="p-[1px] bg-white rounded-full">
-            <img
-                src={siteConfig.extra.defaultPfp}
-                className="rounded-full w-full h-full object-cover"
-                alt="Profile"
-            />
+const ProfilePicture = memo(
+    ({ userPfp, progressPercentage }: { userPfp: string | null; progressPercentage: number }) => (
+        <div
+            className="relative flex items-center overflow-hidden w-[52px] h-[52px] rounded-full p-[3px]"
+            style={{
+                background: `conic-gradient(from 0deg, red ${progressPercentage}%, white ${progressPercentage}%)`,
+            }}
+        >
+            <div className="p-[1px] bg-white rounded-full">
+                <img
+                    src={userPfp || siteConfig.extra.defaultPfp}
+                    className="rounded-full w-full h-full object-cover"
+                    alt="Profile"
+                />
+            </div>
         </div>
-    </div>
-));
+    ),
+);
 
 const UserInfo = memo(({ name, levelName }: { name: string; levelName: string }) => (
     <div className="flex flex-col ml-3">
@@ -40,7 +41,7 @@ const ProfitDisplay = memo(({ points }: { points: number }) => (
         <div className="flex-1 text-center">
             <p className="text-xs text-[#85827d] font-medium">Total profits</p>
             <div className="flex items-center justify-center space-x-1">
-                <p className="text-sm">{formatCurrency((points / siteConfig.pointsDivider))}</p>
+                <p className="text-sm">{formatCurrency(points / siteConfig.pointsDivider)}</p>
             </div>
         </div>
     </div>
@@ -78,7 +79,10 @@ export const Header = memo(function Header() {
                 {user ? (
                     <>
                         <div className="flex items-center gap-1">
-                            <ProfilePicture progressPercentage={Number(progressPercentage)} />
+                            <ProfilePicture
+                                userPfp={user.image}
+                                progressPercentage={Number(progressPercentage)}
+                            />
                             <UserInfo name={user.name} levelName={levelName} />
                         </div>
                         <ProfitDisplay points={points} />
