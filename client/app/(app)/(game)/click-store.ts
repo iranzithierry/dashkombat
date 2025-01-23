@@ -15,7 +15,7 @@ interface ClickStore {
     handleWebsocket: VoidFunction;
 }
 
-const MAX_BATCH_SIZE = 10;
+const MAX_BATCH_SIZE = 5;
 const localstorageClient = new LocalStorageClient();
 
 const generateId = () => {

@@ -1,9 +1,10 @@
-import { Badge, Button, Card, Heading } from "@/components/ui";
-import { db } from "@/lib/db";
 import React from "react";
+import { db } from "@/lib/db";
+import { Badge, Button, Card, Heading } from "@/components/ui";
 import BuyButton from "../../components/buy-button";
 import { formatCurrency } from "@/lib/utils";
 
+export const revalidate = 10;
 export default async function page() {
     const packages = await db.package.findMany();
     return (
