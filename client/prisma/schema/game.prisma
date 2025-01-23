@@ -1,0 +1,43 @@
+model Package {
+    id              String   @id @default(cuid())
+    name            String
+    price           Float
+    priceInUsd      Float
+    durationDays    Int
+    pointsPerClick  Int      @default(1)
+    maxClicksPerDay Int      @default(5000)
+    createdAt       DateTime @default(now())
+
+    users User[]
+
+    @@map("packages")
+}
+
+model ClickStats {
+    id             String   @id @default(cuid())
+    userId         String   @unique
+    user           User     @relation(fields: [userId], references: [id])
+    todayClicks    Int      @default(0)
+    resetTimestamp BigInt
+    date           DateTime @default(now()) @db.Date
+
+    @@map("click_stats")
+}
+
+model Withdrawal {
+    id        String           @id @default(cuid())
+    userId    String
+    user      User             @relation(fields: [userId], references: [id])
+    amount    Float
+    status    WithdrawalStatus @default(PENDING)
+    createdAt DateTime         @default(now())
+    updatedAt DateTime         @updatedAt
+
+    @@map("withdrawals")
+}
+
+enum WithdrawalStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}

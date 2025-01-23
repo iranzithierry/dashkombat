@@ -1,0 +1,2 @@
+[build]
+target = "bun" # Use 'bun' or 'node' as the target
