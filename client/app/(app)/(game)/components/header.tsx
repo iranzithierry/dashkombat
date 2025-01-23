@@ -55,7 +55,7 @@ export const Header = memo(function Header() {
             initialize();
             alreadyMounted.current = true;
         }
-    }, [initialize]);
+    }, []);
 
     const { progressPercentage, levelName } = useMemo(() => {
         const totalLevels = levelNames.length;

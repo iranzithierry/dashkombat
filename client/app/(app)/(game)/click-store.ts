@@ -29,14 +29,17 @@ export const useClickStore = create<ClickStore>((set, get) => ({
     remainingClicks: 0,
     websocket: null,
     initialize: async () => {
-        const fetchPoints = async () => {
-            const { remainingClicks, points } = await getPoints();
-            set({ remainingClicks, points });
-        };
-        const [_, user] = await Promise.all([fetchPoints(), getAuth()]);
-        if (user) {
-            set({ user });
-            get().handleWebsocket();
+        try {
+            const user = await getAuth();
+            if (user) {
+                const { remainingClicks, points } = (await getPoints()) as NonNullable<
+                    Awaited<ReturnType<typeof getPoints>>
+                >;
+                set({ remainingClicks, points, user });
+                get().handleWebsocket();
+            }
+        } catch (error) {
+            console.error("Error initializing click store:", error);
         }
     },
     handleClick: (e) => {
@@ -48,6 +51,7 @@ export const useClickStore = create<ClickStore>((set, get) => ({
             const mergedClicks = [...clicks, { id: generateId(), x: e.pageX, y: e.pageY }];
             set({
                 remainingClicks: remainingClicks - 1,
+                // @ts-ignore
                 points: points + user.package.pointsPerClick,
                 clicks: mergedClicks,
             });

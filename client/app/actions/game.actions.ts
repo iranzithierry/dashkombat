@@ -1,16 +1,19 @@
 "use server";
 import ms from "ms";
 import { db } from "@/lib/db";
-import { getAuth } from "./auth.actions"
+import { getAuth } from "./auth.actions";
 
 export const getPoints = async () => {
     const user = await getAuth();
+    if (!user) return null;
     const points = user.pointsEarned;
-    const remainingClicks = (user.package?.maxClicksPerDay || 0) - (user.clickStats?.todayClicks ?? 0);
+    const remainingClicks =
+        (user.package?.maxClicksPerDay || 0) - (user.clickStats?.todayClicks ?? 0);
     return { points, remainingClicks };
-}
+};
 export const resetClickingTimeout = async () => {
     const user = await getAuth();
+    if (!user) return null;
     const now = new Date();
     const resetTimestamp = Number(user.clickStats?.resetTimestamp);
 
@@ -25,4 +28,4 @@ export const resetClickingTimeout = async () => {
         return true;
     }
     return false;
-}
+};
