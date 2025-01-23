@@ -11,6 +11,7 @@ export const auth = betterAuth({
     trustedOrigins: [
         "http://localhost:3000",
         "http://192.168.1.74:3000",
+        "https://click-it-one.vercel.app"
     ],
     emailAndPassword: {
         enabled: true,
