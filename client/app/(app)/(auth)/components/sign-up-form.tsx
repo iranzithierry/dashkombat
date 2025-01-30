@@ -189,7 +189,7 @@ export default function SignUpForm() {
                             </button>
                         )}
                     </ValidatorForm>
-                    <div className="flex font-semibold text-muted-fg mt-6">
+                    <div className="flex justify-center w-full font-semibold text-muted-fg mt-6">
                         <p className="mx-auto">
                             By signing up, you agree to our{" "}
                             <b className="text-fg underline underline-offset-2">
