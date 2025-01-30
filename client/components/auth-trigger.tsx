@@ -39,7 +39,7 @@ export default function AuthTrigger() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center w-full">
                         <div className="flex gap-x-3">
                             {isSignUp ? "Already have an account? " : "Don't have an account?"}
                             <button
