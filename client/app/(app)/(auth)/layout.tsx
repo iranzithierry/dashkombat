@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 				<AuthNavbar />
 			</div>
 			<div className="absolute right-0 bottom-0 h-120 w-200 rounded-xl bg-gradient-to-br from-sky-500 to-blue-500 opacity-5 blur-3xl" />
-			<div className="mx-auto w-full max-w-lg">
+			<div className="mx-auto px-2 w-full max-w-lg">
 				{children}
 			</div>
 		</main>
