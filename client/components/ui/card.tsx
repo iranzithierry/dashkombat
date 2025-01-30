@@ -10,7 +10,7 @@ const card = tv({
         root: [
             "xrkr xkd2 rounded-3xl bg-muted/40  overflow-hidden [&:has(.card-footer)]:overflow-hidden border text-fg shadow-sm",
         ],
-        header: "xlw32 card-header flex flex-col space-y-1.5 p-4",
+        header: "xlw32 card-header flex flex-col space-y-1.5 p-6",
         title: "klda font-semibold text-fg leading-none tracking-tight sm:leading-6",
         description: "dl2 text-base text-muted-fg sm:text-sm",
         content: "yahnba card-content  z-10 relative p-6",

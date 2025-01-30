@@ -13,30 +13,29 @@ import { IconFingerPrint } from "./icons";
 
 const menus = [
     {
-        name: "Packages",
-        icon: IconPackageFill,
-        path: "/packages",
-    },
-    {
         name: "Invite",
         path: "/invite",
         icon: IconPersonAddedFill,
+    },
+    {
+        name: "Tasks",
+        path: "/tasks",
+        icon: IconChecklist,
     },
     {
         name: "Play",
         path: "/",
         icon: IconFingerPrint,
     },
-
     {
-        name: "Wallet",
-        path: "/#wallet",
-        icon: IconBrandCash,
+        name: "Packages",
+        icon: IconPackageFill,
+        path: "/packages",
     },
     {
-        name: "Tasks",
-        path: "/tasks",
-        icon: IconChecklist,
+        name: "Wallet",
+        path: "/wallet",
+        icon: IconBrandCash,
     },
 ];
 
@@ -52,12 +51,12 @@ export function Navigation() {
                     <Link
                         key={index}
                         href={menu.path}
-                        className={`flex  py-2 transition w-full flex-col items-center justify-center gap-1 ${isActive(menu.path) ? "text-fg [&>svg]:stroke-8 fill-fg font-semibold" : "text-muted-fg"}`}
+                        className={`flex  py-2 transition w-full flex-col items-center justify-center gap-1 ${isActive(menu.path) ? "text-fg [&>svg]:stroke-12 fill-fg font-extrabold" : "text-muted-fg"}`}
                     >
                         <menu.icon className="w-6 h-6" />
                         <span className="text-xs">{menu.name}</span>
                         {isActive(menu.path) && (
-                            <div className="w-[80%] mx-auto h-1 bg-pink rounded-full"></div>
+                            <div className="w-[80%] mx-auto h-1 bg-warning rounded-full"></div>
                         )}
                     </Link>
                 ))}

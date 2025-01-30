@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     title: "Sign Up",
 };
 
-export default function Page() {
+export default async function Page() {
     return (
         <Card className="relative inset-shadow-fg/5 inset-shadow-xs border-0 ring ring-fg/10 dark:inset-ring-fg/5">
             <Card.Header className="w-full text-center !py-8">

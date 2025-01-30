@@ -1,11 +1,14 @@
 model User {
-    id            String  @id
-    name          String
-    email         String
-    emailVerified Boolean
-    image         String?
-    packageId     String?
-    uplineId      String?
+    id                 String    @id
+    name               String
+    email              String
+    emailVerified      Boolean
+    image              String?
+    packageId          String?
+    purchasedPackageAt DateTime?
+
+    uplineId   String?
+    inviteCode String? @unique
 
     createdAt DateTime
     updatedAt DateTime
@@ -21,10 +24,15 @@ model User {
     upline    User?  @relation(fields: [uplineId], references: [id], name: "UserUpline")
     downlines User[] @relation(name: "UserUpline")
 
-    package      Package?     @relation(fields: [packageId], references: [id])
-    withdrawals  Withdrawal[]
-    pointsEarned Int      @default(0)
-    clickStats   ClickStats?
+    package     Package?           @relation(fields: [packageId], references: [id])
+    withdrawals Withdrawal[]
+    clickStats  ClickStats?
+    tasks       UserTaskActivity[]
+
+    pointsEarned Int @default(0)
+    totalClicks  Int @default(0)
+
+    lastWithdrawalDate DateTime?
 
     @@unique([email])
     @@map("users")

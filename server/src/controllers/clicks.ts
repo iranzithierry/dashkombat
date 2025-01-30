@@ -1,3 +1,4 @@
+import { db } from "@/db";
 import { getUserConnection } from "..";
 import { PointsQueue } from "../queues/points";
 
@@ -8,10 +9,8 @@ export interface ClicksPayload {
 export class ClicksController {
     public async handle(data: ClicksPayload) {
         try {
-            // TODO: analyze the x and y coordinates to determine if the click is valid [✔]
-            const results = this.analyzeClickCoordinates(data.clicks);
+            const results = this.detectSpamming(data.clicks);
             if (results.status === "error") {
-                // TODO: Ban user also in DB
                 const userWsConn = getUserConnection(data.userId);
                 if (userWsConn) {
                     userWsConn.send(
@@ -33,7 +32,7 @@ export class ClicksController {
         }
     }
 
-    public analyzeClickCoordinates(clicks: ClicksPayload["clicks"]): {
+    public detectSpamming(clicks: ClicksPayload["clicks"]): {
         status: "error" | "success";
         message: string;
         reason: string;

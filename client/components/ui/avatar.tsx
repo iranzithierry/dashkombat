@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { type VariantProps, tv } from "tailwind-variants"
 
 const avatar = tv({
@@ -57,7 +58,7 @@ const Avatar = ({
           </text>
         </svg>
       )}
-      {src && <img className="size-full" src={src} alt={alt} />}
+      {src && <Image width={800} height={800} className="size-full" src={src} alt={alt} />}
     </span>
   )
 }

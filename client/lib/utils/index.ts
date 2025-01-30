@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
 const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
@@ -17,5 +18,14 @@ const formatCurrency = (amount: number) => {
     });
 };
 
-export { cn, delay, formatCurrency };
+const didPackageExpired = (purchasedPackageAt: Date, packageDurationDays: number) => {
+    const daysSincePurchase = Math.floor(
+        (new Date().getTime() - purchasedPackageAt.getTime()) / (1000 * 60 * 60 * 24),
+    );
+    if (daysSincePurchase > packageDurationDays) {
+        return true;
+    }
+    return false
+};
+export { cn, delay, formatCurrency, didPackageExpired };
 export * from "./fonts";

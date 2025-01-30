@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Heading, Modal } from "@/components/ui";
 import { Package } from "@prisma/client";
 import Image from "next/image";
@@ -9,10 +9,33 @@ import { formatCurrency } from "@/lib/utils";
 const wallet = {
     names: "Thierry",
     momoCode: "687702",
+    whatsappSupport: "+250788451370",
 };
 
 export default function BuyButton({ pkg }: { pkg: Package }) {
     const [buyModalOpened, setBuyModalOpen] = useState(false);
+    const [countdown, setCountdown] = useState(10);
+    const [canClickDone, setCanClickDone] = useState(false);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (buyModalOpened && countdown > 0) {
+            timer = setInterval(() => {
+                setCountdown((prev) => prev - 1);
+            }, 1000);
+        }
+        if (countdown === 0) {
+            setCanClickDone(true);
+        }
+        return () => {
+            if (timer) clearInterval(timer);
+        };
+    }, [buyModalOpened, countdown]);
+
+    const resetCountdown = () => {
+        setCountdown(10);
+        setCanClickDone(false);
+    };
 
     const openCaller = () => {
         if (typeof window !== "undefined") {
@@ -24,7 +47,13 @@ export default function BuyButton({ pkg }: { pkg: Package }) {
             <Button onPress={() => setBuyModalOpen(true)} shape="circle" className="w-full">
                 Buy
             </Button>
-            <Modal isOpen={buyModalOpened} onOpenChange={setBuyModalOpen}>
+            <Modal
+                isOpen={buyModalOpened}
+                onOpenChange={(open) => {
+                    setBuyModalOpen(open);
+                    if (!open) resetCountdown();
+                }}
+            >
                 <Modal.Content>
                     <Modal.Header>
                         <Modal.Title>
@@ -74,6 +103,9 @@ export default function BuyButton({ pkg }: { pkg: Package }) {
                     <Modal.Footer>
                         <Button
                             onPress={() => {
+                                const currentDate = new Date().toLocaleDateString();
+                                const whatsappLink = `https://wa.me/${wallet.whatsappSupport}?text=Hello, I just purchased the ${pkg.name} package on ${currentDate}.`;
+                                window.open(whatsappLink, "_blank");
                                 toast.error(
                                     "Please wait while we verify your payment. You will be notified via the email used during registration.",
                                     {
@@ -82,8 +114,9 @@ export default function BuyButton({ pkg }: { pkg: Package }) {
                                 );
                             }}
                             intent="secondary"
+                            isDisabled={!canClickDone}
                         >
-                            Done?
+                            Done? {countdown > 0 ? `(${countdown}s)` : ""}
                         </Button>
                     </Modal.Footer>
                 </Modal.Content>

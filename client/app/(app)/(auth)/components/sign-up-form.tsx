@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { authClient } from "@/lib/auth/auth.client";
 import { useForm } from "@/lib/utils/hooks/use-form";
 import { ValidatorForm } from "@/components/ui/form";
-import { Button, ProgressCircle, TextField } from "ui";
+import { Button, Checkbox, Note, ProgressCircle, TextField } from "ui";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Step = "name" | "method" | "final";
@@ -19,6 +19,12 @@ const signUpSchema = z.object({
 
 export default function SignUpForm() {
     const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+
+    const refId = params.get("refId");
+    if (refId && typeof window !== "undefined") {
+        document.cookie = `ref.id=${refId}; max-age=86400; path=/`;
+    }
+
     const redirectBackParam = params.get("redirect-back") || "/";
 
     const formValues = { email: "", name: "", password: "" };
@@ -76,7 +82,7 @@ export default function SignUpForm() {
                                 ? setError("password", errorMessage)
                                 : setError("email", errorMessage);
                         },
-                        onSuccess: () => {
+                        onSuccess: async (ctx) => {
                             typeof window !== "undefined" &&
                                 window.location.replace(redirectBackParam);
                         },
@@ -183,6 +189,18 @@ export default function SignUpForm() {
                             </button>
                         )}
                     </ValidatorForm>
+                    <div className="flex font-semibold text-muted-fg mt-6">
+                        <p className="mx-auto">
+                            By signing up, you agree to our{" "}
+                            <b className="text-fg underline underline-offset-2">
+                                <a href="/terms">Terms</a>
+                            </b>
+                            &nbsp;and&nbsp;
+                            <b className="text-fg underline underline-offset-2">
+                                <a href="/privacy">Privacy Policy</a>
+                            </b>
+                        </p>
+                    </div>
                 </motion.div>
             </AnimatePresence>
         </motion.div>

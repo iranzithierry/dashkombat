@@ -8,11 +8,18 @@ datasource db {
 }
 
 model User {
-  id           String      @id
-  packageId    String?
-  package      Package?    @relation(fields: [packageId], references: [id])
-  pointsEarned Int         @default(0)
-  clickStats   ClickStats?
+  id                 String      @id
+  packageId          String?
+  package            Package?    @relation(fields: [packageId], references: [id])
+  clickStats         ClickStats?
+  purchasedPackageAt DateTime?
+
+  totalClicks  Int @default(0)
+  pointsEarned Int @default(0)
+
+  uplineId  String?
+  upline    User?   @relation(fields: [uplineId], references: [id], name: "UserUpline")
+  downlines User[]  @relation(name: "UserUpline")
 
   @@map("users")
 }

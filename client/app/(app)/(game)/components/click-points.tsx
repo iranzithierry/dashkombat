@@ -16,7 +16,7 @@ export default function ClickPoints() {
                         animation: `float 0.5s ease-out`,
                     }}
                 >
-                    +{user?.package.pointsPerClick}
+                    +{user?.package?.pointsPerClick}
                 </div>
             ))}
         </>

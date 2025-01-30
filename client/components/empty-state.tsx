@@ -2,7 +2,7 @@ import React from 'react'
 import { SearchXIcon } from 'lucide-react'
 import { ProgressCircle } from './ui'
 
-export default function NoRecords({ title, description, pending = false }: { title?: string, description?: string, pending?: boolean }) {
+export default function EmptyState({ title, description, pending = false }: { title?: string, description?: string, pending?: boolean }) {
     return (
         <section className="prose min-h-[20vw] flex flex-col items-center justify-center">
             <span className="flex size-24 items-center justify-center rounded-full bg-wg-red-50/70">
@@ -25,7 +25,7 @@ export default function NoRecords({ title, description, pending = false }: { tit
                 {pending ? (
                     `wait the moment....`
                 ) : (
-                    description ? description : `There are no ${title} available at the moment.`
+                    description || description?.length == 0 ? description : `There are no ${title} available at the moment.`
                 )}
             </p>
         </section>

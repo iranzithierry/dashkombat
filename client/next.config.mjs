@@ -11,6 +11,9 @@ const nextConfig = {
 		],
 		dangerouslyAllowSVG: true,
 	},
+	devIndicators: {
+		appIsrStatus: false,
+	}
 }
 
 export default nextConfig

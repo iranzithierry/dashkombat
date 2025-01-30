@@ -1,7 +1,6 @@
 "use client";
 import { Button, Navbar } from "ui";
 import { siteConfig } from "@/resources/site";
-import { IconBrandApple } from "justd-icons";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function AuthNavbar(props: React.ComponentProps<typeof Navbar>) {
@@ -13,7 +12,6 @@ export default function AuthNavbar(props: React.ComponentProps<typeof Navbar>) {
         <Navbar {...props}>
             <div className="flex w-full justify-between backdrop-blur-md border-b-2 border-muted items-center p-2">
                 <a href="/" className="flex gap-x-3">
-                    <IconBrandApple className="size-6 sm:size-5" />
                     <h4 className="font-medium text-base !pl-0 flex items-center">
                         {siteConfig.name}
                     </h4>

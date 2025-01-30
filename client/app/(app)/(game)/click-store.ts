@@ -1,22 +1,22 @@
 import { toast } from "sonner";
 import { create } from "zustand";
-import { getAuth } from "@/app/actions/auth.actions";
+import { banUser, getAuth } from "@/app/actions/auth.actions";
 import { getPoints } from "@/app/actions/game.actions";
-import { LocalStorageClient } from "@/lib/utils/localstorage";
 import { siteConfig } from "@/resources/site";
+import { didPackageExpired } from "@/lib/utils";
 interface ClickStore {
     user: Awaited<ReturnType<typeof getAuth>>;
     points: number;
     clicks: { id: string; x: number; y: number }[];
     remainingClicks: number;
     websocket: WebSocket | null;
+    clickTimeout: NodeJS.Timeout | null;
     initialize: () => Promise<void>;
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     handleWebsocket: VoidFunction;
 }
 
-const MAX_BATCH_SIZE = 5;
-const localstorageClient = new LocalStorageClient();
+const MAX_BATCH_SIZE = 20;
 
 const generateId = () => {
     return `${Date.now()}:${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
@@ -28,10 +28,15 @@ export const useClickStore = create<ClickStore>((set, get) => ({
     clicks: [],
     remainingClicks: 0,
     websocket: null,
+    clickTimeout: null,
     initialize: async () => {
         try {
             const user = await getAuth();
             if (user) {
+                if (!user.package && typeof window !== "undefined") {
+                    window.location.replace("/packages");
+                    return;
+                }
                 const { remainingClicks, points } = (await getPoints()) as NonNullable<
                     Awaited<ReturnType<typeof getPoints>>
                 >;
@@ -43,11 +48,27 @@ export const useClickStore = create<ClickStore>((set, get) => ({
         }
     },
     handleClick: (e) => {
-        const { points, clicks, remainingClicks, user } = get();
-        if (remainingClicks <= 0) {
-            toast.error("You have reached your daily limit of clicks.");
+        const { points, clicks, remainingClicks, user, clickTimeout } = get();
+        if (remainingClicks <= 0 || user?.banned) {
+            toast.error(
+                user?.banned
+                    ? "You were banned from clicking due to click spamming"
+                    : "You have reached your daily limit of clicks.",
+            );
             return;
         } else if (user) {
+            if (clickTimeout) clearTimeout(clickTimeout);
+            if (user.purchasedPackageAt) {
+                const packageExpired = didPackageExpired(
+                    user.purchasedPackageAt,
+                    user.package?.durationDays as number,
+                );
+                if (packageExpired) {
+                    toast.error("Your package has expired. Please purchase a new package.");
+                    window.location.replace("/packages");
+                    return;
+                }
+            }
             const mergedClicks = [...clicks, { id: generateId(), x: e.pageX, y: e.pageY }];
             set({
                 remainingClicks: remainingClicks - 1,
@@ -77,6 +98,24 @@ export const useClickStore = create<ClickStore>((set, get) => ({
                     }),
                 );
                 set({ clicks: [] });
+            } else {
+                const timeout = setTimeout(() => {
+                    const currentClicks = get().clicks;
+                    if (currentClicks.length > 0) {
+                        get().websocket?.send(
+                            JSON.stringify({
+                                type: "CLICK",
+                                data: {
+                                    clicks: currentClicks,
+                                    userId: user.id,
+                                },
+                            }),
+                        );
+                        set({ clicks: [], clickTimeout: null });
+                    }
+                }, 5000);
+
+                set({ clickTimeout: timeout });
             }
         }
     },
@@ -85,24 +124,24 @@ export const useClickStore = create<ClickStore>((set, get) => ({
         if (!websocket) {
             const url = `${siteConfig.protocols.websocket}://${siteConfig.protocols.serverHost}/api/ws?userId=${user?.id}`;
             const ws = new WebSocket(url);
-            ws.onmessage = (event) => {
+            ws.onmessage = async (event) => {
                 const data = JSON.parse(event.data);
                 switch (data.type) {
                     case "SPAMMING":
-                        set({ remainingClicks: 0, points: get().points - 100 });
                         toast.error(data.data.message);
-                        localstorageClient.setItem("spamming", true);
+                        await banUser();
+                        typeof window !== "undefined" && window.location.reload();
                         break;
                     default:
                         break;
                 }
             };
             ws.onopen = () => {
-                console.log("WebSocket connection opened.");
+                // console.log("WebSocket connection opened.");
                 set({ websocket: ws });
             };
             ws.onclose = () => {
-                console.log("WebSocket connection closed.");
+                // console.log("WebSocket connection closed.");
                 set({ websocket: null });
             };
         }

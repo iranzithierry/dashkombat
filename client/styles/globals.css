@@ -52,7 +52,6 @@
     --color-chart-4: var(--chart-4);
     --color-chart-5: var(--chart-5);
 
-
     --color-pink: var(--pink);
 }
 
@@ -68,11 +67,25 @@
     body {
         background-color: var(--bg);
         color: var(--fg);
+    }
+    .game-container {
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         -moz-user-select: none;
         user-select: none;
         -webkit-user-drag: none;
+    }
+
+    dt {
+        @apply font-semibold text-lg;
+    }
+
+    dd {
+        @apply font-normal text-sm text-muted-fg;
+    }
+
+    .bg-stars {
+        background-image: url(/images/stars.png);
     }
 }
 
@@ -130,7 +143,7 @@
         --radius-3xl: calc(var(--radius-lg) * 2);
         --radius-4xl: calc(var(--radius-lg) * 3);
 
-        --pink: #df73e0
+        --pink: #df73e0;
     }
 
     .dark {
@@ -177,18 +190,9 @@
         --chart-4: oklch(0.705 0.015 286.067);
         --chart-5: oklch(0.871 0.006 286.286);
 
-        --pink: #df73e0
+        --pink: #df73e0;
     }
 }
-
-dt {
-    @apply font-semibold text-lg;
-}
-
-dd {
-    @apply font-normal text-sm text-muted-fg;
-}
-
 @keyframes float {
     0% {
         opacity: 1;
@@ -199,8 +203,4 @@ dd {
         opacity: 0;
         transform: translateY(-50px);
     }
-}
-
-.bg-stars {
-    background-image: url(/images/stars.png);
 }

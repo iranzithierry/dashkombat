@@ -1,8 +1,10 @@
 import ms from "ms";
 import { db } from "../db";
 import { wsConnections } from "..";
+import { didPackageExpired } from "@/utils";
 export type JobsType = "process-points";
 
+const pointsForUplineDivider = 10;
 export default class PointsJob {
     async handle(job: JobsType, data: any) {
         switch (job) {
@@ -36,14 +38,37 @@ export default class PointsJob {
         const resetTimestamp = Number(userStats?.resetTimestamp);
         const timeDifference = now.getTime() - resetTimestamp;
 
+        const packageExpired = didPackageExpired(
+            user.purchasedPackageAt,
+            user.package?.durationDays as number,
+        );
+        if (packageExpired) {
+            if (wsConn) {
+                wsConn.ws.send(
+                    JSON.stringify({
+                        type: "Error",
+                        data: {
+                            message: "Your package has expired. Please purchase new package.",
+                        },
+                    }),
+                );
+            }
+            return;
+        }
+
         if (timeDifference > ms("1d")) {
             console.info(`Resetting today's clicks for user ${user.id}.`);
             userStats = await this.resetTodayClicks(user.id, now);
         }
         if (userStats?.todayClicks + todayClicks > maxClicksPerDay) {
             console.error(`User ${user.id} exceeded max clicks per day`);
-            if(wsConn) {
-                wsConn.ws.send(JSON.stringify({ type: "error", message: "You have exceeded your daily click limit." }));
+            if (wsConn) {
+                wsConn.ws.send(
+                    JSON.stringify({
+                        type: "error",
+                        message: "You have exceeded your daily click limit.",
+                    }),
+                );
             }
             return;
         }
@@ -62,6 +87,19 @@ export default class PointsJob {
                     update: {
                         pointsEarned: {
                             increment: pointsPerClick * todayClicks,
+                        },
+                        totalClicks: {
+                            increment: todayClicks,
+                        },
+                        upline: {
+                            update: {
+                                pointsEarned: {
+                                    increment:
+                                        Math.ceil(todayClicks / pointsForUplineDivider) > 0
+                                            ? Math.ceil(todayClicks / pointsForUplineDivider)
+                                            : 1,
+                                },
+                            },
                         },
                     },
                 },

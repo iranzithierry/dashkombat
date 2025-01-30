@@ -29,10 +29,6 @@ export const CountdownDisplay = memo(function CountdownDisplay({
         return () => clearInterval(timer);
     }, [resetTimestamp]);
 
-    useEffect(() => {
-        console.log("CountdownDisplay mounted");
-    }, []);
-
     return (
         <>
             <h2>Resets {formatResetTime(resetTimestamp).toLowerCase()}</h2>

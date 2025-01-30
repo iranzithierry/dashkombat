@@ -30,7 +30,7 @@ export const ClickContainer = memo(function ClickContainer() {
                     background: `url(/images/click-container.png) center no-repeat`,
                     backgroundSize: `100% 100%`,
                 }}
-                className="w-70 mx-auto top-glow h-70 shadow-[#1b1b2b] overflow-hidden ring-4 ring-[#364492]/20 cursor-pointer transition-transform shadow-2xl rounded-full items-center flex justify-center"
+                className="w-70 active:scale-[0.98] mx-auto top-glow h-70 shadow-[#1b1b2b] overflow-hidden ring-4 ring-[#364492]/20 cursor-pointer transition-transform shadow-2xl rounded-full items-center flex justify-center"
             />
 
             <ClickStatus />

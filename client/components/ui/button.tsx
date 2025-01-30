@@ -43,6 +43,13 @@ const buttonStyles = tv({
 				"[--btn-bg-hovered:var(--btn-danger-hovered)] [--btn-border-hovered:var(--btn-danger-hovered)]",
 				"inset-shadow-danger-fg/30 data-hovered:inset-shadow-danger-fg/35 data-pressed:inset-shadow-danger-fg/30",
 			],
+			success: [
+				"outline-success [--btn-bg:var(--color-success)] [--btn-border:var(--color-success)] [--btn-fg:var(--color-success-fg)] dark:[--btn-bg:var(--color-success)]",
+				"[--btn-success-hovered:color-mix(in_oklab,var(--color-success)_93%,white_7%)]",
+				"dark:[--btn-success-hovered:color-mix(in_oklab,var(--color-success)_96%,white_4%)]",
+				"[--btn-bg-hovered:var(--btn-success-hovered)] [--btn-border-hovered:var(--btn-success-hovered)]",
+				"inset-shadow-success-fg/30 data-hovered:inset-shadow-success-fg/35 data-pressed:inset-shadow-success-fg/30",
+			],
 		},
 		appearance: {
 			solid: [
@@ -59,7 +66,7 @@ const buttonStyles = tv({
 			small: "h-9 px-3.5 text-sm/5 sm:text-sm/5",
 			medium: "h-10 px-4 text-base sm:text-sm/6",
 			large: "h-11 px-4.5 text-base *:data-[slot=icon]:mx-[-1.5px] sm:*:data-[slot=icon]:size-5 lg:text-base/7",
-			"x-large": "h-20 px-6.5 text-base *:data-[slot=icon]:mx-[-1.5px] sm:*:data-[slot=icon]:size-8 lg:text-base/9",
+			"x-large": "px-6.5 text-base *:data-[slot=icon]:mx-[-1.5px] sm:*:data-[slot=icon]:size-8 lg:text-base/9",
 			"square-petite": "size-9 shrink-0 **:data-[slot=icon]:text-current",
 		},
 		shape: {
@@ -83,7 +90,7 @@ const buttonStyles = tv({
 })
 
 interface ButtonProps extends ButtonPrimitiveProps {
-	intent?: "primary" | "secondary" | "danger" | "warning"
+	intent?: "primary" | "secondary" | "danger" | "warning" | "success"
 	size?: "medium" | "large" | "square-petite" | "extra-small" | "small" | "x-large"
 	shape?: "square" | "circle"
 	appearance?: "solid" | "outline" | "plain"

@@ -1,12 +1,14 @@
 model Package {
     id              String   @id @default(cuid())
     name            String
+    slug            String   @unique
     price           Float
     priceInUsd      Float
     durationDays    Int
     pointsPerClick  Int      @default(1)
     maxClicksPerDay Int      @default(5000)
     createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now()) @updatedAt
 
     users User[]
 
@@ -20,24 +22,50 @@ model ClickStats {
     todayClicks    Int      @default(0)
     resetTimestamp BigInt
     date           DateTime @default(now()) @db.Date
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @default(now()) @updatedAt
 
     @@map("click_stats")
 }
 
 model Withdrawal {
-    id        String           @id @default(cuid())
-    userId    String
-    user      User             @relation(fields: [userId], references: [id])
-    amount    Float
-    status    WithdrawalStatus @default(PENDING)
-    createdAt DateTime         @default(now())
-    updatedAt DateTime         @updatedAt
+    id              String           @id @default(cuid())
+    userId          String
+    user            User             @relation(fields: [userId], references: [id])
+    amount          Float
+    phoneNumber     String
+    paymentProvider String
+    status          WithdrawalStatus @default(PENDING)
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
 
     @@map("withdrawals")
+}
+
+model Task {
+    id        String             @id @default(cuid())
+    slug      String             @unique
+    name      String
+    points    Int                @default(0)
+    autoClaim Boolean            @default(false)
+    users     UserTaskActivity[]
+}
+
+model UserTaskActivity {
+    id     String @id @default(cuid())
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+    taskId String
+    task   Task   @relation(fields: [taskId], references: [id])
 }
 
 enum WithdrawalStatus {
     PENDING
     APPROVED
+    REJECTED
+}
+
+enum TaskStatus {
+    CLAIMED
     REJECTED
 }

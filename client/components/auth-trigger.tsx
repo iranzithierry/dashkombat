@@ -10,7 +10,9 @@ export default function AuthTrigger() {
 
     return (
         <Modal>
-            <Button size="small" className={"px-6"} shape="circle" >Sign In</Button>
+            <Button size="small" className={"px-6"} shape="circle">
+                Sign In
+            </Button>
             <Modal.Content size="xl">
                 {isSignUp ? (
                     <Modal.Header>
@@ -37,14 +39,28 @@ export default function AuthTrigger() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className="flex gap-x-3">
-                        {isSignUp ? "Already have an account? " : "Don't have an account?"}
-                        <button
-                            className="font-semibold underline cursor-pointer hover:text-muted-fg"
-                            onClick={() => setIsSignUp(isSignUp ? false : true)}
-                        >
-                            {isSignUp ? "Sign In" : "Sign Up"}
-                        </button>
+                    <div className="flex flex-col items-center">
+                        <div className="flex gap-x-3">
+                            {isSignUp ? "Already have an account? " : "Don't have an account?"}
+                            <button
+                                className="font-semibold underline cursor-pointer hover:text-muted-fg"
+                                onClick={() => setIsSignUp(isSignUp ? false : true)}
+                            >
+                                {isSignUp ? "Sign In" : "Sign Up"}
+                            </button>
+                        </div>
+                        <div className="flex font-semibold text-muted-fg mt-4">
+                            <p>
+                                By signing up, you agree to our{" "}
+                                <b className="text-fg underline underline-offset-2">
+                                    <a href="/terms">Terms</a>
+                                </b>
+                                &nbsp;and&nbsp;
+                                <b className="text-fg underline underline-offset-2">
+                                    <a href="/privacy">Privacy Policy</a>
+                                </b>
+                            </p>
+                        </div>
                     </div>
                 </Modal.Footer>
             </Modal.Content>
