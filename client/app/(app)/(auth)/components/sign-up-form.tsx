@@ -189,16 +189,6 @@ export default function SignUpForm() {
                             </button>
                         )}
                     </ValidatorForm>
-                    <div className="flex justify-center w-full font-semibold text-muted-fg mt-6">
-                            By signing up, you agree to our{" "}
-                            <b className="text-fg underline underline-offset-2">
-                                <a href="/terms">Terms</a>
-                            </b>
-                            &nbsp;and&nbsp;
-                            <b className="text-fg underline underline-offset-2">
-                                <a href="/privacy">Privacy Policy</a>
-                            </b>
-                    </div>
                 </motion.div>
             </AnimatePresence>
         </motion.div>
