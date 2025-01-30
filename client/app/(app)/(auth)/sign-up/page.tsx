@@ -15,7 +15,7 @@ export default async function Page() {
             </Card.Header>
             <Card.Content className="!bg-transparent !border-0">
                 <SignUpForm />
-                    <div className="flex justify-center w-full font-semibold text-muted-fg mt-6">
+                    <p className="text-center mx-auto font-semibold text-muted-fg mt-6">
                             By signing up, you agree to our{" "}
                             <b className="text-fg underline underline-offset-2">
                                 <a href="/terms">Terms</a>
@@ -24,7 +24,7 @@ export default async function Page() {
                             <b className="text-fg underline underline-offset-2">
                                 <a href="/privacy">Privacy Policy</a>
                             </b>
-                    </div>
+                    </p>
             </Card.Content>
         </Card>
     );
