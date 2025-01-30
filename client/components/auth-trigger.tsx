@@ -49,8 +49,8 @@ export default function AuthTrigger() {
                                 {isSignUp ? "Sign In" : "Sign Up"}
                             </button>
                         </div>
-                        <div className="flex font-semibold text-muted-fg mt-4">
-                            <p>
+                        <div className="flex mt-4 w-full">
+                            <p className="text-center mx-auto font-semibold text-muted-fg">
                                 By signing up, you agree to our{" "}
                                 <b className="text-fg underline underline-offset-2">
                                     <a href="/terms">Terms</a>

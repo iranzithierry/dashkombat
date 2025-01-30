@@ -7,7 +7,6 @@ import AuthTrigger from "@/components/auth-trigger";
 import { memo, useEffect, useRef, useMemo } from "react";
 import { getLevelName, levelNames } from "@/resources/data";
 import { Avatar } from "@/components/ui";
-import { AnimatedCounter } from "react-animated-counter";
 
 const ProfilePicture = memo(
     ({ userPfp, progressPercentage }: { userPfp: string | null; progressPercentage: number }) => (
@@ -29,14 +28,7 @@ const ProfitDisplay = memo(({ points }: { points: number }) => (
         <div className="flex-1 text-center space-y-0.5">
             <p className="text-xs text-muted-fg font-medium leading-none">Total profits</p>
             <div className="flex items-center justify-center">
-                <AnimatedCounter
-                    includeCommas
-                    incrementColor="var(--color-warning)"
-                    value={points}
-                    color="white"
-                    fontSize="12px"
-                />
-                {/* <p className="text-xs leading-none">{formatCurrency(points / siteConfig.pointsDivider)}</p> */}
+                <p className="text-xs leading-none">{formatCurrency(points / siteConfig.pointsDivider)}</p>
             </div>
         </div>
     </div>
