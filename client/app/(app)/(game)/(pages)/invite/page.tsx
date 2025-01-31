@@ -71,7 +71,7 @@ export default async function InviteScreen() {
                             </div>
                             <span className="font-bold text-sm flex items-center gap-1">
                                 <IconGoldCoin className="w-6.5 h-6.5 text-pink" />+
-                                {user.pointsEarned.toLocaleString()}
+                                {friend.pointsEarned.toLocaleString()}
                             </span>
                         </div>
                     ))}
