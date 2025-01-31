@@ -11,7 +11,7 @@ export const ClickContainer = memo(function ClickContainer() {
     return (
         <div className="flex flex-col justify-between flex-1">
             <div className="mx-auto mt-4 flex items-center flex-col">
-                {remainingClicks == 0 && user?.clickStats && (
+                {remainingClicks <= 0 && user?.clickStats && (
                     <CountdownDisplay resetTimestamp={Number(user.clickStats.resetTimestamp)} />
                 )}
                 {user && <PointsDisplay />}

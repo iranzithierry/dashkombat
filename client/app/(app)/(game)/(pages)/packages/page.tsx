@@ -40,14 +40,14 @@ export default async function page() {
                                     Clicks per day: &nbsp;
                                     <b className="text-fg">{pkg.maxClicksPerDay}</b>
                                 </li>
-                                <li className="text-lg text-muted-fg flex justify-between">
+                                {/* <li className="text-lg text-muted-fg flex justify-between">
                                     <p>
                                         Average daily profts:&nbsp;
                                         <b className="text-fg">
                                             {formatCurrency(pkg.maxClicksPerDay/siteConfig.pointsDivider)}
                                         </b>
                                     </p>
-                                </li>
+                                </li> */}
                                 <li className="text-lg text-muted-fg flex justify-between">
                                     <p>
                                         Points per click:&nbsp;

@@ -113,7 +113,7 @@ export const useClickStore = create<ClickStore>((set, get) => ({
                         );
                         set({ clicks: [], clickTimeout: null });
                     }
-                }, 5000);
+                }, 3000);
 
                 set({ clickTimeout: timeout });
             }

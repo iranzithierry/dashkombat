@@ -27,9 +27,10 @@ export async function signOut() {
 }
 
 export async function banUser() {
-    const now = new Date();
     const user = await getAuth();
     if (!user) return;
+    console.log("Banned user:", user.id, user.package?.maxClicksPerDay);
+    const now = new Date();
     await db.user.update({
         where: { id: user.id },
         data: {
