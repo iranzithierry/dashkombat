@@ -2,6 +2,7 @@ import ms from "ms";
 import { db } from "../db";
 import { wsConnections } from "..";
 import { didPackageExpired } from "@/utils";
+import { Prisma } from "@prisma/client";
 export type JobsType = "process-points";
 
 const pointsForUplineDivider = 10;
@@ -77,33 +78,42 @@ export default class PointsJob {
     }
 
     async updateTodayClicks(userId: string, todayClicks: number, pointsPerClick: number) {
+        const user = await db.user.findUnique({
+            where: { id: userId },
+            select: { uplineId: true }
+        });
+
+        const updateData: Prisma.ClickStatsUpdateInput = {
+            todayClicks: {
+                increment: todayClicks,
+            },
+            user: {
+                update: {
+                    pointsEarned: {
+                        increment: pointsPerClick * todayClicks,
+                    },
+                    totalClicks: {
+                        increment: todayClicks,
+                    },
+                }
+            }
+        };
+
+        if (user?.uplineId) {
+            updateData.user.update.upline = {
+                update: {
+                    pointsEarned: {
+                        increment: Math.ceil(todayClicks / pointsForUplineDivider) > 0
+                            ? Math.ceil(todayClicks / pointsForUplineDivider)
+                            : 1,
+                    }
+                }
+            };
+        }
+
         await db.clickStats.update({
             where: { userId },
-            data: {
-                todayClicks: {
-                    increment: todayClicks,
-                },
-                user: {
-                    update: {
-                        pointsEarned: {
-                            increment: pointsPerClick * todayClicks,
-                        },
-                        totalClicks: {
-                            increment: todayClicks,
-                        },
-                        upline: {
-                            update: {
-                                pointsEarned: {
-                                    increment:
-                                        Math.ceil(todayClicks / pointsForUplineDivider) > 0
-                                            ? Math.ceil(todayClicks / pointsForUplineDivider)
-                                            : 1,
-                                },
-                            },
-                        },
-                    },
-                },
-            },
+            data: updateData
         });
     }
 
