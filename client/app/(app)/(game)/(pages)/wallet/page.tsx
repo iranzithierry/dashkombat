@@ -9,7 +9,8 @@ import WithdrawComponent from "../../components/withdraw-component";
 import { Clock, Wallet, Users, MousePointerClick, ChevronRight } from "lucide-react";
 import LogoutButton from "../../components/logout-button";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
 export default async function UserProfile() {
     const user = await getAuth();
     if (!user) return <div>You must be logged in to view this page.</div>;
