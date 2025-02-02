@@ -11,11 +11,11 @@ export const revalidate = 20;
 export default async function Page() {
     return (
         <>
-            {/* <Script
+            <Script
                 async
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1195424807027193"
                 crossOrigin="anonymous"
-            /> */}
+            />
             <div className="w-full flex-1 font-bold flex flex-col select-none bg-stars ">
                 <div className="min-h-[calc(100dvh-100px)] game-container flex flex-col">
                     <Header />

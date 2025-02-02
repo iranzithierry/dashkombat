@@ -2,20 +2,21 @@
 
 import { useEffect } from "react";
 import { useClickStore } from "../click-store";
+import { siteConfig } from "@/resources/site";
 
 export const VideoAd = () => {
-    const { showAd: isVisible, setShowAd: onClose } = useClickStore();
+    const { showAd } = useClickStore();
     useEffect(() => {
-        if (isVisible) {
+        if (showAd) {
             try {
                 (window.adsbygoogle = window.adsbygoogle || []).push({});
             } catch (err) {
                 console.error("Ad Error:", err);
             }
         }
-    }, [isVisible]);
+    }, [showAd]);
 
-    if (!isVisible) return null;
+    if (!showAd) return null;
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -23,9 +24,10 @@ export const VideoAd = () => {
                 <ins
                     className="adsbygoogle"
                     style={{ display: "block" }}
-                    data-ad-client="your-client-id"
-                    data-ad-slot="your-ad-slot"
+                    data-ad-client={siteConfig.google.adClientId}
+                    data-ad-slot={siteConfig.google.adSlot}
                     data-ad-format="video"
+                    data-adtest={process.env.NODE_ENV === "development" ? "on" : "off"}
                     data-full-width-responsive="true"
                 ></ins>
             </div>

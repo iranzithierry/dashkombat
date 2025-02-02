@@ -14,5 +14,11 @@ export const siteConfig = {
     },
     pointsDivider: 7.82,
     minimumPoints: 100_000,
+    google: {
+        adClientId: "ca-pub-1195424807027193",
+        adSlot: "1927489489",
+        
+
+    }
 
 };
