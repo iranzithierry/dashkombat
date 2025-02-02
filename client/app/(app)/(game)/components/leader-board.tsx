@@ -11,6 +11,7 @@ export default async function LeaderBoard() {
         },
         take: 30,
     });
+    if(users.length < 10) return null;
     return (
         <div className="p-2">
             <Separator />

@@ -30,23 +30,36 @@ export async function banUser() {
     const user = await getAuth();
     if (!user) return;
     console.log("Banned user:", user.id, user.package?.maxClicksPerDay);
-    const now = new Date();
-    await db.user.update({
-        where: { id: user.id },
-        data: {
-            banned: true,
-            banReason: "Click Cheating",
-            banExpires: addMonths(now, 3),
-            clickStats: {
-                update: {
-                    data: {
-                        todayClicks: user.package?.maxClicksPerDay,
-                        resetTimestamp: addMonths(now, 3).getTime(),
+    try {
+        const now = new Date();
+        if (!user.clickStats) {
+            await db.clickStats.create({
+                data: {
+                    userId: user.id,
+                    todayClicks: 0,
+                    resetTimestamp: 0,
+                },
+            });
+        }
+        await db.user.update({
+            where: { id: user.id },
+            data: {
+                banned: true,
+                banReason: "Click Cheating",
+                banExpires: addMonths(now, 3),
+                clickStats: {
+                    update: {
+                        data: {
+                            todayClicks: user.package?.maxClicksPerDay,
+                            resetTimestamp: addMonths(now, 3).getTime(),
+                        },
                     },
                 },
             },
-        },
-    });
+        });
+    } catch (error) {
+        console.error("Error banning user:", error);
+    }
 }
 
 export const associateInvitee = async (inviteCode: string, userId: string) => {

@@ -146,7 +146,7 @@ export const useClickStore = create<ClickStore>((set, get) => ({
             ws.onopen = () => {
                 // console.log("WebSocket connection opened.");
                 set({ websocket: ws });
-                setTimeout(() => { set({ showAd: true }) }, 4000); // TESTING
+                // setTimeout(() => { set({ showAd: true }) }, 4000); // TESTING
             };
             ws.onclose = () => {
                 // console.log("WebSocket connection closed.");

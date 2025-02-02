@@ -17,6 +17,7 @@ export const ClickContainer = memo(function ClickContainer() {
                 {user && <PointsDisplay />}
             </div>
             <button
+                {...(process.env.NODE_ENV == "development" ? { id: "click-container" } : {})}
                 onClick={(e) => {
                     if (user) {
                         handleClick(e);
