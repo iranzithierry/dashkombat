@@ -11,6 +11,8 @@ interface ClickStore {
     remainingClicks: number;
     websocket: WebSocket | null;
     clickTimeout: NodeJS.Timeout | null;
+    showAd: boolean;
+    setShowAd: (show: boolean) => void;
     initialize: () => Promise<void>;
     handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     handleWebsocket: VoidFunction;
@@ -29,6 +31,8 @@ export const useClickStore = create<ClickStore>((set, get) => ({
     remainingClicks: 0,
     websocket: null,
     clickTimeout: null,
+    showAd: false,
+    setShowAd: (show) => set({ showAd: show }),
     initialize: async () => {
         try {
             const user = await getAuth();
@@ -131,6 +135,9 @@ export const useClickStore = create<ClickStore>((set, get) => ({
                         toast.error(data.data.message);
                         await banUser();
                         typeof window !== "undefined" && window.location.reload();
+                        break;
+                    case "SHOW_AD":
+                        set({ showAd: true });
                         break;
                     default:
                         break;

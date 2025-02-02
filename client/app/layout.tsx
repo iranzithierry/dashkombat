@@ -20,6 +20,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
+            <meta name="google-adsense-account" content="ca-pub-1195424807027193"></meta>
             <body className={cn("font-display antialiased", displayFont.variable)}>
                 <Toaster richColors position="top-right" />
                 <Providers>{children}</Providers>

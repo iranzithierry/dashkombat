@@ -1,6 +1,8 @@
 const isProd = process.env.NODE_ENV == "production";
+
+// dashkombat.com
 export const siteConfig = {
-    name: "Click It",
+    name: "Dash Kombat",
     extra: {
         missingPfpFallback: "/images/missing.png",
         defaultPfp: "/images/pixel.png",
