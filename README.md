@@ -1,0 +1,1 @@
+Dashkombat is like a popular Hamsterkombat game on Telegram, where you tap to earn coins. I tried to bring in the same features, but with some extras like cheat detection, which took me hours to figure out. I also worked on keeping server loads low by batching clicks and stuff. 😅🎮
